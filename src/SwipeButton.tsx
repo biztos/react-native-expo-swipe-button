@@ -141,9 +141,15 @@ const SwipeButton: FC<SwipeButtonProps> = ({
     PanResponder.create({
       onPanResponderGrant: onSwipeStart,
       onPanResponderEnd: onSwipeEnd,
-      onStartShouldSetPanResponder: () => false,
+      // @biztos modification:
+      // In order to function inside a RN Modal on iOS, these must be true:
+      onStartShouldSetPanResponder: () => true,  // was false
+      onMoveShouldSetPanResponderCapture: () => true,  // was false
       onMoveShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponderCapture: () => false,
+      // HOWEVER, I have not tested this on Android or in anything approaching
+      // an edge case.  YMMV, E&OE, you probably should not use this, use the
+      // original instead:
+      // https://github.com/Marinos33/react-native-expo-swipe-button
       onPanResponderMove: onMove,
       onPanResponderRelease: onRelease,
     });
